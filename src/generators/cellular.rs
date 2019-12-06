@@ -16,11 +16,9 @@ impl Cellular {
             while y < height-2 {
                 x = 1;
                 while x < width-2 {
-                    next_board[y][x] = 1;
+                    next_board[y][x] = 0;
                     
                     if board[y][x] == 0 {
-                        next_board[y][x] = 0;
-                        
                         wall_count = 0;
                         wall_count += board[y-1][x-1];
                         wall_count += board[y-1][x];
@@ -32,6 +30,7 @@ impl Cellular {
                         wall_count += board[y][x+1];
 
                         if wall_count >= 5 {
+                            println!("wall up! {},{}", y, x);
                             next_board[y][x] = 1;
                         }
                     }
@@ -42,7 +41,29 @@ impl Cellular {
                 y += 1;
             }
 
-            board = next_board;
+            println!("=== Generation {} ===", current_generation);
+            for row in board.iter() {
+                for tile in row.iter() {
+                    match tile {
+                        1 => print!("#"),
+                        _ => print!(".")
+                    }
+                }
+                println!();
+            }
+            println!("===");
+            for row in next_board.iter() {
+                for tile in row.iter() {
+                    match tile {
+                        1 => print!("#"),
+                        _ => print!(".")
+                    }
+                }
+                println!();
+            }
+            println!("===");
+
+            board = next_board.clone();
             current_generation += 1;
         }
 
